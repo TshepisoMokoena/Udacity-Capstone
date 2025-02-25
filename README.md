@@ -1,6 +1,4 @@
-Here's your updated README with explanations on why precision, accuracy, F1-score, and recall were chosen as evaluation metrics.  
 
----
 
 # Starbucks Capstone Project  
 
