@@ -1,186 +1,105 @@
+# Starbucks Capstone Project
 
----
+## Blog Post
 
-# **Starbucks Offer Completion Prediction**
+Check out my detailed blog post about this project on Medium: [Udacity Starbucks Project](https://medium.com/@tshepisomokoena20/udacity-starbucks-project-7f955aabf1d6)
 
-## **Project Overview**
-Starbucks' personalized rewards program provides targeted promotional offers to customers. However, not all offers are completed, making it crucial to understand **which factors drive offer completion** and how **customer demographics, transactions, and offer characteristics impact engagement**.  
+## Project Overview
 
-This project **analyzes customer behavior, extracts key insights, and builds a machine learning model** to predict whether an offer will be completed. The results will help Starbucks optimize its marketing strategies, improve customer engagement, and enhance the efficiency of promotions.
+This project aims to analyze customer interactions with Starbucks' personalized rewards program and predict offer completions. The goal is to identify key factors that drive customer engagement and optimize promotional strategies.
 
----
+## Installation
 
-## **Installation and Setup**
+To run the project locally, install the following dependencies:
 
-### **Prerequisites**
-Ensure you have the following installed:
-- Python 3.x  
-- Jupyter Notebook or any Python IDE  
-- Required libraries:
-  ```bash
-  pip install pandas numpy matplotlib seaborn scikit-learn
-  ```
-
-### **Repository Structure**
-This project consists of the **main Jupyter Notebook** and **JSON data files**:
-
-```plaintext
-📂 Starbucks_Offer_Prediction
-│── Starbucks_Capstone_notebook.ipynb  # Main analysis and modeling notebook
-│── portfolio.json                     # Offer details (types, rewards, duration, difficulty)
-│── profile.json                        # Customer demographic data
-│── transcript.json                     # Customer transactions and interactions with offers
-│── README.md                           # Project documentation
-│── requirements.txt                     # Dependencies
-```
-
----
-
-## **Data Files and Attributes**
-
-The dataset is provided in **JSON format**, containing three key files:
-
-### **1. portfolio.json** (Offers dataset)
-- Contains **10 promotional offers** with attributes:
-  - **id**: Unique identifier for each offer  
-  - **reward**: Reward amount for completing the offer  
-  - **channels**: Communication channels used (email, web, mobile, social)  
-  - **difficulty**: Minimum spending required to complete the offer  
-  - **duration**: Offer validity in days  
-  - **offer_type**: Type of offer (bogo, discount, informational)
-
-### **2. profile.json** (Customer demographic data)
-- Contains **customer attributes**:
-  - **id**: Unique customer identifier  
-  - **age**: Customer's age  
-  - **became_member_on**: Date customer joined the Starbucks rewards program  
-  - **gender**: Gender (M, F, O, or missing values)  
-  - **income**: Annual income in USD  
-
-### **3. transcript.json** (Customer transactions & offer interactions)
-- Tracks how customers **interact with offers** over time:
-  - **person**: Customer ID  
-  - **event**: Type of event (offer received, viewed, completed, or transaction)  
-  - **time**: Time in hours since the start of the dataset  
-  - **value**: Contains transaction amount, offer ID, or reward amount  
-
----
-
-## **Data Preprocessing and Feature Engineering**
-
-### **Data Cleaning and Merging**
-- **Merged portfolio, profile, and transcript datasets** to create a unified dataset.
-- **Handled missing values** (e.g., some users had no recorded income or gender).
-- **Filtered out transactions unrelated to offer completion** to focus on promotional interactions.
-
-### **Feature Engineering**
-- **Created `tenure`**: Days since the customer joined the rewards program.
-- **Extracted offer interaction times**: `offer_received_time` and `offer_viewed_time` for each transaction.
-- **Summed `transaction amounts before completion`** to measure spending before an offer was completed.
-- **Encoded categorical features**: Applied **one-hot encoding** to offer type, gender, and offer ID.
-
----
-
-## **Exploratory Data Analysis (EDA)**
-
-### **Key Findings**
-1. **Spending and Offer Completion Trends**
-   - **Older, high-income customers** complete offers at the highest rates.
-   - **Younger, low-income customers** have lower transaction amounts and completion rates.
-
-2. **Offer Type & Communication Channels**
-   - **BOGO and discount offers** had the highest completion rates.
-   - **Different age and income groups responded better to different communication channels.**
-
-3. **Feature Importance for Offer Completion**
-   - **Income, tenure, offer difficulty, reward, and offer type were the most influential factors.**
-   - **Personalization** plays a major role in increasing engagement.
-
----
-
-## **Machine Learning Model**
-
-### **Pipeline for Model Training**
-We built a **Random Forest Classifier** using a structured machine learning pipeline:
-
-1. **Feature Selection**: Used engineered and relevant customer attributes.
-2. **Data Preprocessing**:
-   - **Standard scaling for numerical features.**
-   - **One-hot encoding for categorical variables.**
-3. **Train-Test Split**: 80% training, 20% testing.
-4. **Hyperparameter Tuning**:
-   - Used **GridSearchCV** with **4-fold cross-validation** to optimize performance.
-   - Tuned parameters:
-     ```python
-     param_grid = {
-         'classifier__n_estimators': [50, 100, 200],
-         'classifier__max_depth': [None, 10, 20, 30],
-         'classifier__min_samples_split': [2, 5, 10]
-     }
-     ```
-5. **Evaluation Metrics**:
-   - **Accuracy: 78%**
-   - **Precision, Recall, F1-Score** for completed vs. not completed offers.
-   - **Confusion Matrix** to visualize classification performance.
-   - **Feature Importance Analysis** to identify key predictors.
-
----
-
-## **Results and Key Takeaways**
-
-### **Model Performance**
-- The **Random Forest Classifier achieved 78% accuracy**.
-- **Income, tenure, difficulty, reward, and offer type were the strongest predictors of offer completion.**
-- **Confusion Matrix Analysis**:
-  - The model correctly predicted **4,694 non-completed offers** and **3,888 completed offers**.
-  - Some misclassification occurred, suggesting possible improvements in feature selection.
-
-### **Customer Segmentation Insights**
-- **Older, high-income customers complete offers at higher rates** and tend to spend more.
-- **Lower-income customers, regardless of age, have lower transaction amounts and completion rates.**
-- **Offer completion rates rise with age and income**, suggesting **personalized promotions** can boost engagement.
-
----
-
-## **Recommendations to Improve Offer Completion**
-
-### **Personalized Offer Structuring**
-- Tailor **offer difficulty and reward amounts** to individual spending behavior.
-- **High-income, long-tenure customers** respond well to **more complex, high-reward offers**.
-- **New or budget-conscious customers** prefer **easier, more frequent rewards**.
-
-### **Refining Communication Strategies**
-- **Different customer groups respond better to different communication channels**.
-- Target **email and mobile notifications for high-income customers**.
-- Engage **younger customers via social media and app-based offers**.
-
-### **Implementing A/B Testing**
-- Conduct **experiments to test different offer structures**.
-- Measure **conversion rates based on segmentation** (age, income, tenure).
-
-### **Future Model Enhancements**
-- Integrate **real-time transaction data and seasonal trends**.
-- Develop **segmented machine learning models** for different customer groups.
-- Test advanced models like **XGBoost or LightGBM** for better predictions.
-
----
-
-## **How to Run the Model**
-
-### **Using Jupyter Notebook**
-To run the analysis step-by-step, open:
 ```bash
-jupyter notebook Starbucks_Capstone_notebook.ipynb
+pip install pandas numpy scikit-learn matplotlib seaborn
 ```
 
----
+Ensure you have Jupyter Notebook installed to run the provided notebook file.
 
-## **Final Thoughts**
+## File Structure
 
-This project successfully demonstrated how **machine learning can enhance Starbucks' promotional campaigns** by predicting offer completion likelihood. Our findings suggest that **income, tenure, offer type, difficulty, and rewards are crucial factors influencing engagement**. By implementing **personalized offers, optimized communication strategies, and targeted incentives**, Starbucks can improve customer participation and maximize the effectiveness of its rewards program.
+```
+├── README.md                        # Project documentation
+├── Starbucks_Capstone_notebook.ipynb # Main notebook with analysis and modeling
+├── portfolio.json                    # Contains information about offers and their attributes
+├── profile.json                      # Contains customer demographic and membership details
+├── transcript.zip                     # Contains customer interaction data (events, transactions, etc.)
+```
 
-Future improvements include **advanced segmentation, real-time data integration, and continuous A/B testing** to further refine promotional strategies.
+## Dataset Details
 
----
+### **portfolio.json**
 
-This README provides an overview of the project, guiding users on **data processing, analysis, modeling, and key insights** to optimize offer completion rates in Starbucks' rewards program.
+- `id`: Unique identifier for each offer
+- `reward`: Reward amount for completing the offer
+- `channels`: List of channels where the offer was sent (email, web, mobile, social)
+- `difficulty`: Amount the customer needs to spend to qualify for the offer
+- `duration`: Validity period of the offer in days
+- `offer_type`: Type of offer (BOGO, discount, informational)
+
+### **profile.json**
+
+- `id`: Unique customer ID
+- `age`: Customer's age
+- `gender`: Gender (M, F, O)
+- `income`: Annual income of the customer
+- `became_member_on`: Date when the customer joined the rewards program
+
+### **transcript.zip**
+
+- `person_id`: Unique customer ID
+- `event`: Type of event (offer received, offer viewed, offer completed, transaction)
+- `time`: Time elapsed since the start of data collection
+- `offer_id`: Corresponding offer ID (if applicable)
+- `amount`: Transaction amount (if applicable)
+
+## Steps to Build the Model
+
+### 1. **Exploratory Data Analysis (EDA)**
+
+- Analyzed customer demographics, spending behavior, and offer completion trends.
+- Identified factors influencing offer completion rates, such as age, income, and offer type.
+
+### 2. **Feature Engineering**
+
+- Created tenure (days since joining the program) based on `became_member_on`.
+- One-hot encoded categorical features (gender, offer type, offer ID).
+- Removed time-based columns to prevent data leakage.
+- Aggregated transaction amounts before offer completion.
+
+### 3. **Data Preprocessing and Modeling**
+
+- Used `StandardScaler` to normalize numerical features.
+- Built a `RandomForestClassifier` within a pipeline.
+- Tuned hyperparameters using `GridSearchCV` with 4-fold cross-validation.
+- Evaluated the model using classification metrics (accuracy, precision, recall, F1-score, and AUC-ROC).
+
+### 4. **Model Evaluation and Insights**
+
+- The best model achieved an accuracy of **78%**.
+- Key influencing factors: **income, tenure, difficulty, reward amount, and offer type**.
+- Older and wealthier customers had higher offer completion rates.
+- Different customer segments responded better to different communication channels.
+
+## Recommendations
+
+### **Increasing Offer Completions**
+
+- Personalize offers based on income and tenure to improve engagement.
+- Target younger, lower-income customers with more attractive promotions.
+- Optimize communication channels to align with customer preferences.
+- Implement reminder notifications for incomplete offers.
+
+### **Future Improvements and Testing**
+
+- Conduct A/B testing on different offer structures and communication strategies.
+- Incorporate real-time behavioral data for better predictive performance.
+- Build segmented models for different customer groups to improve targeting.
+- Explore advanced ML models like XGBoost and deep learning for better accuracy.
+
+## Conclusion
+
+This project successfully built a predictive model to determine offer completions and provided actionable insights for Starbucks to improve its rewards program. With targeted marketing strategies, optimized promotions, and continuous testing, Starbucks can drive higher customer engagement and increase offer completions.
+
