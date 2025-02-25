@@ -66,8 +66,6 @@ Ensure you have Jupyter Notebook installed to run the provided notebook file.
 
 - Created tenure (days since joining the program) based on `became_member_on`.
 - One-hot encoded categorical features (gender, offer type, offer ID).
-- Removed time-based columns to prevent data leakage.
-- Aggregated transaction amounts before offer completion.
 
 ### 3. **Data Preprocessing and Modeling**
 
